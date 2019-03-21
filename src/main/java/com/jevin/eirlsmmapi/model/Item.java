@@ -1,26 +1,34 @@
 package com.jevin.eirlsmmapi.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import javax.persistence.*;
 
 @Entity
 public class Item {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
     private String description;
     private int quantity;
     private double price;
 
+    @ManyToOne
+    @JoinColumn
+    @JsonIgnoreProperties("items")
+    private Supplier supplier;
+
     public Item() {
     }
 
-    public Item(String name) {
+    public Item(String name, String description, int quantity, double price, Supplier supplier) {
         this.name = name;
+        this.description = description;
+        this.quantity = quantity;
+        this.price = price;
+        this.supplier = supplier;
     }
 
     public int getId() {
@@ -37,5 +45,37 @@ public class Item {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public Supplier getSupplier() {
+        return supplier;
+    }
+
+    public void setSupplier(Supplier supplier) {
+        this.supplier = supplier;
     }
 }

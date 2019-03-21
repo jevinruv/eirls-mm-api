@@ -21,7 +21,6 @@ public class SupplierController {
         return repo.findById(id);
     }
 
-
     @GetMapping
     public List<Supplier> getAll() {
         return repo.findAll();

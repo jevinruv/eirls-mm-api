@@ -3,10 +3,8 @@ package com.jevin.eirlsmmapi.controller;
 import com.jevin.eirlsmmapi.model.Item;
 import com.jevin.eirlsmmapi.repository.ItemRepo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,5 +24,17 @@ public class ItemController {
     @GetMapping
     public List<Item> getAll() {
         return repo.findAll();
+    }
+
+    @PostMapping
+    @PreAuthorize("hasRole('MM')")
+    public Item addOrUpdate(@RequestBody Item item) {
+        return repo.save(item);
+    }
+
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('MM') or hasRole('ADMIN')")
+    public void delete(@PathVariable int id) {
+        repo.deleteById(id);
     }
 }

@@ -3,13 +3,14 @@ package com.jevin.eirlsmmapi.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 public class Supplier {
 
 
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
     private String status;
@@ -19,14 +20,19 @@ public class Supplier {
     @JsonIgnoreProperties("supplier")
     private SupplierContact supplierContact;
 
+    @OneToMany(mappedBy = "supplier", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("supplier")
+    private Set<Item> items;
+
     public Supplier() {
     }
 
-    public Supplier(String name, String status, int leadTime, SupplierContact supplierContact) {
+    public Supplier(String name, String status, int leadTime, SupplierContact supplierContact, Set<Item> items) {
         this.name = name;
         this.status = status;
         this.leadTime = leadTime;
         this.supplierContact = supplierContact;
+        this.items = items;
     }
 
     public int getId() {
@@ -67,6 +73,14 @@ public class Supplier {
 
     public void setLeadTime(int leadTime) {
         this.leadTime = leadTime;
+    }
+
+    public Set<Item> getItems() {
+        return items;
+    }
+
+    public void setItems(Set<Item> items) {
+        this.items = items;
     }
 }
 
