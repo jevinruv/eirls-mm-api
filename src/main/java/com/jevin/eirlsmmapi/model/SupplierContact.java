@@ -1,6 +1,6 @@
 package com.jevin.eirlsmmapi.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 
@@ -12,17 +12,22 @@ public class SupplierContact {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private int id;
     private String phone;
+    private String address;
+    private String email;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn
-    @JsonBackReference
+    @MapsId
+    @JsonIgnoreProperties("supplierContact")
     private Supplier supplier;
 
     public SupplierContact() {
     }
 
-    public SupplierContact(String phone, Supplier supplier) {
+    public SupplierContact(String phone, String address, String email, Supplier supplier) {
         this.phone = phone;
+        this.address = address;
+        this.email = email;
         this.supplier = supplier;
     }
 
@@ -48,5 +53,21 @@ public class SupplierContact {
 
     public void setSupplier(Supplier supplier) {
         this.supplier = supplier;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

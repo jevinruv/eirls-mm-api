@@ -12,6 +12,9 @@ public class Item {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private int id;
     private String name;
+    private String description;
+    private int quantity;
+    private double price;
 
     public Item() {
     }

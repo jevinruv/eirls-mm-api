@@ -1,7 +1,6 @@
 package com.jevin.eirlsmmapi.controller;
 
 import com.jevin.eirlsmmapi.model.Supplier;
-import com.jevin.eirlsmmapi.model.RoleName;
 import com.jevin.eirlsmmapi.repository.SupplierRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -30,7 +29,7 @@ public class SupplierController {
 
     @PostMapping
     @PreAuthorize("hasRole('MM')")
-    public Supplier add(@RequestBody Supplier supplier) {
+    public Supplier addOrUpdate(@RequestBody Supplier supplier) {
         return repo.save(supplier);
     }
 
