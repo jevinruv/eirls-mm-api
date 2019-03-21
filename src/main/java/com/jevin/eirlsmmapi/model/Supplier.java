@@ -15,6 +15,7 @@ public class Supplier {
     private String name;
     private String status;
     private int leadTime;
+    private String performance;
 
     @OneToOne(mappedBy = "supplier", cascade = CascadeType.ALL)
     @JsonIgnoreProperties("supplier")
@@ -27,10 +28,11 @@ public class Supplier {
     public Supplier() {
     }
 
-    public Supplier(String name, String status, int leadTime, SupplierContact supplierContact, Set<Item> items) {
+    public Supplier(String name, String status, int leadTime, String performance, SupplierContact supplierContact, Set<Item> items) {
         this.name = name;
         this.status = status;
         this.leadTime = leadTime;
+        this.performance = performance;
         this.supplierContact = supplierContact;
         this.items = items;
     }
@@ -81,6 +83,14 @@ public class Supplier {
 
     public void setItems(Set<Item> items) {
         this.items = items;
+    }
+
+    public String getPerformance() {
+        return performance;
+    }
+
+    public void setPerformance(String performance) {
+        this.performance = performance;
     }
 }
 

@@ -9,11 +9,13 @@ import javax.persistence.*;
 public class SupplierContact {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String phone;
-    private String address;
     private String email;
+    private String location_main;
+    private String location_delivery;
+    private String location_collection;
 
     @OneToOne
     @JoinColumn
@@ -24,9 +26,11 @@ public class SupplierContact {
     public SupplierContact() {
     }
 
-    public SupplierContact(String phone, String address, String email, Supplier supplier) {
+    public SupplierContact(String phone, String location_main, String location_delivery, String location_collection, String email, Supplier supplier) {
         this.phone = phone;
-        this.address = address;
+        this.location_main = location_main;
+        this.location_delivery = location_delivery;
+        this.location_collection = location_collection;
         this.email = email;
         this.supplier = supplier;
     }
@@ -55,19 +59,35 @@ public class SupplierContact {
         this.supplier = supplier;
     }
 
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
     public String getEmail() {
         return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getLocation_main() {
+        return location_main;
+    }
+
+    public void setLocation_main(String location_main) {
+        this.location_main = location_main;
+    }
+
+    public String getLocation_delivery() {
+        return location_delivery;
+    }
+
+    public void setLocation_delivery(String location_delivery) {
+        this.location_delivery = location_delivery;
+    }
+
+    public String getLocation_collection() {
+        return location_collection;
+    }
+
+    public void setLocation_collection(String location_collection) {
+        this.location_collection = location_collection;
     }
 }
