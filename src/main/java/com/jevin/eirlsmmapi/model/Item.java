@@ -20,16 +20,9 @@ public class Item {
     @JsonIgnoreProperties("items")
     private Supplier supplier;
 
-    public Item() {
-    }
-
-    public Item(String name, String description, int quantity, double price, Supplier supplier) {
-        this.name = name;
-        this.description = description;
-        this.quantity = quantity;
-        this.price = price;
-        this.supplier = supplier;
-    }
+    @OneToOne(mappedBy = "item", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("item")
+    private ItemReorder itemReorder;
 
     public int getId() {
         return id;
@@ -77,5 +70,13 @@ public class Item {
 
     public void setSupplier(Supplier supplier) {
         this.supplier = supplier;
+    }
+
+    public ItemReorder getItemReorder() {
+        return itemReorder;
+    }
+
+    public void setItemReorder(ItemReorder itemReorder) {
+        this.itemReorder = itemReorder;
     }
 }
