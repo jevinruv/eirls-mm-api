@@ -8,7 +8,6 @@ import java.util.Set;
 @Entity
 public class Supplier {
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -25,17 +24,6 @@ public class Supplier {
     @JsonIgnoreProperties("supplier")
     private Set<Item> items;
 
-    public Supplier() {
-    }
-
-    public Supplier(String name, String status, int leadTime, String performance, SupplierContact supplierContact, Set<Item> items) {
-        this.name = name;
-        this.status = status;
-        this.leadTime = leadTime;
-        this.performance = performance;
-        this.supplierContact = supplierContact;
-        this.items = items;
-    }
 
     public int getId() {
         return id;

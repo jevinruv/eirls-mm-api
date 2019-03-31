@@ -2,7 +2,9 @@ package com.jevin.eirlsmmapi.controller;
 
 import com.jevin.eirlsmmapi.model.Supplier;
 import com.jevin.eirlsmmapi.repository.SupplierRepo;
+import com.jevin.eirlsmmapi.service.SupplierService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,6 +14,9 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/suppliers")
 public class SupplierController {
+
+    @Autowired
+    SupplierService supplierService;
 
     @Autowired
     SupplierRepo repo;
@@ -28,8 +33,8 @@ public class SupplierController {
 
     @PostMapping
     @PreAuthorize("hasRole('MM')")
-    public Supplier addOrUpdate(@RequestBody Supplier supplier) {
-        return repo.save(supplier);
+    public ResponseEntity<?> addOrUpdate(@RequestBody Supplier supplier) {
+        return supplierService.addOrUpdate(supplier);
     }
 
     @DeleteMapping("/{id}")
