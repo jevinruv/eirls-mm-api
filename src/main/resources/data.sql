@@ -23,3 +23,10 @@ VALUES
   (1, 'Handle', 500, 30, 'Mountain Bicycle Handle'),
   (2, 'Tyre', 650, 35, 'Mountain Bicycle Tyre'),
   (3, 'Brake', 400, 50, 'Mountain Bicycle Brake');
+
+INSERT INTO item_reorder (item_id, level, quantity)
+VALUES
+  (1, 50, 250),
+  (2, 100, 300),
+  (3, 75, 350),
+  (4, 100, 450);
