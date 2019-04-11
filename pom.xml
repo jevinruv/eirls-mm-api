@@ -74,39 +74,6 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
 
-            <plugin>
-                <groupId>com.microsoft.azure</groupId>
-                <artifactId>azure-webapp-maven-plugin</artifactId>
-                <version>1.1.0</version>
-                <configuration>
-                    <authentication>
-                        <serverId>azure-auth</serverId>
-                    </authentication>
-                    <resourceGroup>maven-plugin</resourceGroup>
-                    <appName>eirls-mm</appName>
-                    <region>westus</region>
-                    <javaVersion>1.8</javaVersion>
-                    <deploymentType>ftp</deploymentType>
-                    <stopAppDuringDeployment>true</stopAppDuringDeployment>
-                    <resources>
-                        <resource>
-                            <directory>${project.basedir}/target</directory>
-                            <targetPath>/</targetPath>
-                            <includes>
-                                <include>*.jar</include>
-                            </includes>
-                        </resource>
-                        <resource>
-                            <directory>${project.basedir}</directory>
-                            <targetPath>/</targetPath>
-                            <includes>
-                                <include>web.config</include>
-                            </includes>
-                        </resource>
-                    </resources>
-                </configuration>
-            </plugin>
-
         </plugins>
     </build>
 
