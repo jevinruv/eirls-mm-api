@@ -31,3 +31,13 @@ VALUES
   (2, 100, 300),
   (3, 75, 350),
   (4, 100, 450);
+
+INSERT INTO complete_item (name, price, quantity, description)
+VALUES
+  ('Mountain Bicycle', 10000, 80, 'Mountain Bicycle Blue'),
+  ('Ladies Bicycle', 8000, 30, 'Ladies Bicycle Green');
+
+INSERT INTO complete_item_reorder (complete_item_id, level, quantity)
+VALUES
+  (1, 50, 100),
+  (2, 50, 100);

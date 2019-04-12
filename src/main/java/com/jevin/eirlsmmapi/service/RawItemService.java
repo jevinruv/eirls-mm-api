@@ -11,12 +11,12 @@ import org.springframework.stereotype.Service;
 public class RawItemService {
 
     @Autowired
-    RawItemRepo repo;
+    RawItemRepo rawItemRepo;
 
     public ResponseEntity<?> addOrUpdate(RawItem rawItem) {
 
         rawItem.getRawItemReorder().setRawItem(rawItem);
-        repo.save(rawItem);
+        rawItemRepo.save(rawItem);
         return new ResponseEntity<>(rawItem, HttpStatus.OK);
     }
 
