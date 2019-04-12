@@ -31,23 +31,29 @@ public class InitDatabase implements CommandLineRunner {
         Set<String> mcRole = new HashSet<>();
         mcRole.add("mc");
 
-        Set<String> sRole = new HashSet<>();
-        sRole.add("s");
+        Set<String> supplierRole = new HashSet<>();
+        supplierRole.add("supplier");
+
+        Set<String> externalRole = new HashSet<>();
+        externalRole.add("external");
 
         UserSignUp admin = new UserSignUp("Admin", "admin", "admin@gmail.com", adminRole, "qwerty");
         UserSignUp mm = new UserSignUp("Tom", "tom", "tom@gmail.com", mmRole, "qwerty");
         UserSignUp mc = new UserSignUp("John", "john", "john@gmail.com", mcRole, "qwerty");
-        UserSignUp s = new UserSignUp("Supplier", "supplier", "supplier@gmail.com", sRole, "qwerty");
+        UserSignUp supplier = new UserSignUp("Supplier", "supplier", "supplier@gmail.com", supplierRole, "qwerty");
+        UserSignUp external = new UserSignUp("External", "external", "external@gmail.com", externalRole, "qwerty");
 
         admin.setRole(adminRole);
         mm.setRole(mmRole);
         mc.setRole(mcRole);
-        s.setRole(sRole);
+        supplier.setRole(supplierRole);
+        external.setRole(externalRole);
 
         userService.createUser(admin);
         userService.createUser(mm);
         userService.createUser(mc);
-        userService.createUser(s);
+        userService.createUser(supplier);
+        userService.createUser(external);
     }
 
 

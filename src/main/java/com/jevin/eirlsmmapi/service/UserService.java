@@ -26,7 +26,7 @@ public class UserService {
     @Autowired
     RoleRepo roleRepo;
 
-    public void createUser(UserSignUp userSignUp){
+    public void createUser(UserSignUp userSignUp) {
 
 
         User user = new User(userSignUp.getName(), userSignUp.getUsername(), userSignUp.getEmail(), encoder.encode(userSignUp.getPassword()));
@@ -35,22 +35,26 @@ public class UserService {
 
         strRoles.forEach(role -> {
 
-            switch (role){
+            switch (role) {
                 case "admin":
-                    Role adminRole = roleRepo.findByName(RoleName.ROLE_ADMIN).orElseThrow(()-> new RuntimeException("User role not found"));
+                    Role adminRole = roleRepo.findByName(RoleName.ROLE_ADMIN).orElseThrow(() -> new RuntimeException("User role not found"));
                     roles.add(adminRole);
                     break;
                 case "mm":
-                    Role mmRole = roleRepo.findByName(RoleName.ROLE_MM).orElseThrow(()-> new RuntimeException("User role not found"));
+                    Role mmRole = roleRepo.findByName(RoleName.ROLE_MM).orElseThrow(() -> new RuntimeException("User role not found"));
                     roles.add(mmRole);
                     break;
                 case "mc":
-                    Role mcRole = roleRepo.findByName(RoleName.ROLE_MC).orElseThrow(()-> new RuntimeException("User role not found"));
+                    Role mcRole = roleRepo.findByName(RoleName.ROLE_MC).orElseThrow(() -> new RuntimeException("User role not found"));
                     roles.add(mcRole);
                     break;
-                case "s":
-                    Role sRole = roleRepo.findByName(RoleName.ROLE_S).orElseThrow(()-> new RuntimeException("User role not found"));
-                    roles.add(sRole);
+                case "supplier":
+                    Role supplierRole = roleRepo.findByName(RoleName.ROLE_SUPPLIER).orElseThrow(() -> new RuntimeException("User role not found"));
+                    roles.add(supplierRole);
+                    break;
+                case "external":
+                    Role externalRole = roleRepo.findByName(RoleName.ROLE_EXTERNAL).orElseThrow(() -> new RuntimeException("User role not found"));
+                    roles.add(externalRole);
                     break;
             }
         });

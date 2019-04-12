@@ -2,7 +2,8 @@ INSERT INTO role (name)
 VALUES
   ('ROLE_MC'),
   ('ROLE_MM'),
-  ('ROLE_S'),
+  ('ROLE_SUPPLIER'),
+  ('ROLE_EXTERNAL'),
   ('ROLE_ADMIN');
 
 INSERT INTO supplier (name, status, lead_time, performance)
