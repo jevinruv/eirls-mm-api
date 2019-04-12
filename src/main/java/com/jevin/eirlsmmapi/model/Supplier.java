@@ -22,7 +22,7 @@ public class Supplier {
 
     @OneToMany(mappedBy = "supplier", cascade = CascadeType.ALL)
     @JsonIgnoreProperties("supplier")
-    private Set<Item> items;
+    private Set<RawItem> rawItems;
 
 
     public int getId() {
@@ -65,12 +65,12 @@ public class Supplier {
         this.leadTime = leadTime;
     }
 
-    public Set<Item> getItems() {
-        return items;
+    public Set<RawItem> getRawItems() {
+        return rawItems;
     }
 
-    public void setItems(Set<Item> items) {
-        this.items = items;
+    public void setRawItems(Set<RawItem> rawItems) {
+        this.rawItems = rawItems;
     }
 
     public String getPerformance() {

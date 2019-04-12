@@ -1,8 +1,8 @@
 package com.jevin.eirlsmmapi.controller;
 
-import com.jevin.eirlsmmapi.model.Item;
-import com.jevin.eirlsmmapi.repository.ItemRepo;
-import com.jevin.eirlsmmapi.service.ItemService;
+import com.jevin.eirlsmmapi.model.RawItem;
+import com.jevin.eirlsmmapi.repository.RawItemRepo;
+import com.jevin.eirlsmmapi.service.RawItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -12,34 +12,34 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/items")
-public class ItemController {
+@RequestMapping("/raw-items")
+public class RawItemController {
 
     @Autowired
-    ItemService itemService;
+    RawItemService rawItemService;
 
     @Autowired
-    ItemRepo repo;
+    RawItemRepo rawItemRepo;
 
     @GetMapping("/{id}")
-    public Optional<Item> get(@PathVariable int id) {
-        return repo.findById(id);
+    public Optional<RawItem> get(@PathVariable int id) {
+        return rawItemRepo.findById(id);
     }
 
     @GetMapping
-    public List<Item> getAll() {
-        return repo.findAll();
+    public List<RawItem> getAll() {
+        return rawItemRepo.findAll();
     }
 
     @PostMapping
     @PreAuthorize("hasRole('MM')")
-    public ResponseEntity<?> addOrUpdate(@RequestBody Item item) {
-        return itemService.addOrUpdate(item);
+    public ResponseEntity<?> addOrUpdate(@RequestBody RawItem rawItem) {
+        return rawItemService.addOrUpdate(rawItem);
     }
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('MM') or hasRole('ADMIN')")
     public void delete(@PathVariable int id) {
-        repo.deleteById(id);
+        rawItemRepo.deleteById(id);
     }
 }

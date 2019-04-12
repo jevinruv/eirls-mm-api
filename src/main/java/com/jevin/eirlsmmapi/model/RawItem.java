@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.persistence.*;
 
 @Entity
-public class Item {
+public class RawItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,12 +17,12 @@ public class Item {
 
     @ManyToOne
     @JoinColumn
-    @JsonIgnoreProperties("items")
+    @JsonIgnoreProperties("rawItems")
     private Supplier supplier;
 
-    @OneToOne(mappedBy = "item", cascade = CascadeType.ALL)
-    @JsonIgnoreProperties("item")
-    private ItemReorder itemReorder;
+    @OneToOne(mappedBy = "rawItem", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("rawItem")
+    private RawItemReorder rawItemReorder;
 
     public int getId() {
         return id;
@@ -72,11 +72,11 @@ public class Item {
         this.supplier = supplier;
     }
 
-    public ItemReorder getItemReorder() {
-        return itemReorder;
+    public RawItemReorder getRawItemReorder() {
+        return rawItemReorder;
     }
 
-    public void setItemReorder(ItemReorder itemReorder) {
-        this.itemReorder = itemReorder;
+    public void setRawItemReorder(RawItemReorder rawItemReorder) {
+        this.rawItemReorder = rawItemReorder;
     }
 }
