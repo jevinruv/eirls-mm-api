@@ -4,6 +4,7 @@ import com.jevin.eirlsmmapi.model.ItemComplete;
 import com.jevin.eirlsmmapi.model.ItemRaw;
 import com.jevin.eirlsmmapi.repository.ItemCompleteRepo;
 import com.jevin.eirlsmmapi.repository.ItemRawRepo;
+import com.jevin.eirlsmmapi.service.ItemLowQuantityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -20,10 +21,13 @@ public class ItemQuantityMonitor {
     @Autowired
     ItemCompleteRepo itemCompleteRepo;
 
+    @Autowired
+    ItemLowQuantityService itemLowQuantityService;
+
+
     @Scheduled(fixedRate = 5000)
     public void checkItemRawQuantities() {
 
-//        System.out.println("Im running");
         List<ItemRaw> itemRawReorderList = new ArrayList<>();
 
         List<ItemRaw> itemRawList = itemRawRepo.findAll();
@@ -35,13 +39,12 @@ public class ItemQuantityMonitor {
             }
         });
 
-        sendSupplierOrder(itemRawReorderList);
+        itemLowQuantityService.setItemRawLowQuantities(itemRawReorderList);
     }
 
     @Scheduled(fixedRate = 5000)
     public void checkItemCompleteQuantities() {
 
-//        System.out.println("Im running");
         List<ItemComplete> itemCompleteReorderList = new ArrayList<>();
 
         List<ItemComplete> itemCompleteList = itemCompleteRepo.findAll();
@@ -53,10 +56,7 @@ public class ItemQuantityMonitor {
             }
         });
 
-//        System.out.println(itemCompleteReorderList.toString());
+        itemLowQuantityService.setItemCompleteLowQuantities(itemCompleteReorderList);
     }
 
-    public void sendSupplierOrder(List<ItemRaw> itemRawReorderList) {
-//        System.out.println(itemRawReorderList.toString());
-    }
 }
