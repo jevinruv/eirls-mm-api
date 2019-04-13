@@ -18,14 +18,14 @@ VALUES
 (2, '0111234567', 'supplier_b@gmail.com', '456 Marine Drive Kandy', '456 Drive Kandy', '456 Marine Kandy'),
 (3, '0911234567', 'supplier_c@gmail.com', '789 Alfred Road Colombo', '789 Road Colombo', '789 Alfred Colombo');
 
-INSERT INTO raw_item (supplier_id, name, price, quantity, description)
+INSERT INTO item_raw (supplier_id, name, price, quantity, description)
 VALUES
   (1, 'Seat', 250, 22, 'Mountain Bicycle Seat'),
   (1, 'Handle', 500, 30, 'Mountain Bicycle Handle'),
   (2, 'Tyre', 650, 35, 'Mountain Bicycle Tyre'),
   (3, 'Brake', 400, 50, 'Mountain Bicycle Brake');
 
-INSERT INTO raw_item_reorder (raw_item_id, level, quantity)
+INSERT INTO item_raw_reorder (item_raw_id, level, quantity)
 VALUES
   (1, 50, 250),
   (2, 100, 300),

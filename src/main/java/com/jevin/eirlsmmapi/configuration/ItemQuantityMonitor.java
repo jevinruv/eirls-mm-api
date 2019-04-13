@@ -1,9 +1,9 @@
 package com.jevin.eirlsmmapi.configuration;
 
 import com.jevin.eirlsmmapi.model.CompleteItem;
-import com.jevin.eirlsmmapi.model.RawItem;
+import com.jevin.eirlsmmapi.model.ItemRaw;
 import com.jevin.eirlsmmapi.repository.CompleteItemRepo;
-import com.jevin.eirlsmmapi.repository.RawItemRepo;
+import com.jevin.eirlsmmapi.repository.ItemRawRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -15,7 +15,7 @@ import java.util.List;
 public class ItemQuantityMonitor {
 
     @Autowired
-    RawItemRepo rawItemRepo;
+    ItemRawRepo itemRawRepo;
 
     @Autowired
     CompleteItemRepo completeItemRepo;
@@ -24,18 +24,18 @@ public class ItemQuantityMonitor {
     public void checkRawItemQuantities() {
 
 //        System.out.println("Im running");
-        List<RawItem> rawItemReorderList = new ArrayList<>();
+        List<ItemRaw> itemRawReorderList = new ArrayList<>();
 
-        List<RawItem> rawItemList = rawItemRepo.findAll();
+        List<ItemRaw> itemRawList = itemRawRepo.findAll();
 
-        rawItemList.forEach(rawItem -> {
+        itemRawList.forEach(rawItem -> {
 
-            if (rawItem.getQuantity() <= rawItem.getRawItemReorder().getLevel()) {
-                rawItemReorderList.add(rawItem);
+            if (rawItem.getQuantity() <= rawItem.getItemRawReorder().getLevel()) {
+                itemRawReorderList.add(rawItem);
             }
         });
 
-        sendSupplierOrder(rawItemReorderList);
+        sendSupplierOrder(itemRawReorderList);
     }
 
     @Scheduled(fixedRate = 5000)
@@ -56,7 +56,7 @@ public class ItemQuantityMonitor {
         System.out.println(completeItemReorderList.toString());
     }
 
-    public void sendSupplierOrder(List<RawItem> rawItemReorderList) {
-        System.out.println(rawItemReorderList.toString());
+    public void sendSupplierOrder(List<ItemRaw> itemRawReorderList) {
+        System.out.println(itemRawReorderList.toString());
     }
 }
