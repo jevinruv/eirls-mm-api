@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.persistence.*;
 
 @Entity
-public class CompleteItem {
+public class ItemComplete {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,9 +15,9 @@ public class CompleteItem {
     private int quantity;
     private double price;
 
-    @OneToOne(mappedBy = "completeItem", cascade = CascadeType.ALL)
-    @JsonIgnoreProperties("completeItem")
-    private CompleteItemReorder completeItemReorder;
+    @OneToOne(mappedBy = "itemComplete", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("itemComplete")
+    private ItemCompleteReorder itemCompleteReorder;
 
     public int getId() {
         return id;
@@ -59,11 +59,11 @@ public class CompleteItem {
         this.price = price;
     }
 
-    public CompleteItemReorder getCompleteItemReorder() {
-        return completeItemReorder;
+    public ItemCompleteReorder getItemCompleteReorder() {
+        return itemCompleteReorder;
     }
 
-    public void setCompleteItemReorder(CompleteItemReorder completeItemReorder) {
-        this.completeItemReorder = completeItemReorder;
+    public void setItemCompleteReorder(ItemCompleteReorder itemCompleteReorder) {
+        this.itemCompleteReorder = itemCompleteReorder;
     }
 }

@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.persistence.*;
 
 @Entity
-public class CompleteItemReorder {
+public class ItemCompleteReorder {
 
     @Id
     private int id;
@@ -15,8 +15,8 @@ public class CompleteItemReorder {
     @OneToOne
     @JoinColumn
     @MapsId
-    @JsonIgnoreProperties("completeItemReorder")
-    private CompleteItem completeItem;
+    @JsonIgnoreProperties("itemCompleteReorder")
+    private ItemComplete itemComplete;
 
     public int getId() {
         return id;
@@ -42,11 +42,11 @@ public class CompleteItemReorder {
         this.level = level;
     }
 
-    public CompleteItem getCompleteItem() {
-        return completeItem;
+    public ItemComplete getItemComplete() {
+        return itemComplete;
     }
 
-    public void setCompleteItem(CompleteItem completeItem) {
-        this.completeItem = completeItem;
+    public void setItemComplete(ItemComplete itemComplete) {
+        this.itemComplete = itemComplete;
     }
 }

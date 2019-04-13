@@ -1,8 +1,8 @@
 package com.jevin.eirlsmmapi.configuration;
 
-import com.jevin.eirlsmmapi.model.CompleteItem;
+import com.jevin.eirlsmmapi.model.ItemComplete;
 import com.jevin.eirlsmmapi.model.ItemRaw;
-import com.jevin.eirlsmmapi.repository.CompleteItemRepo;
+import com.jevin.eirlsmmapi.repository.ItemCompleteRepo;
 import com.jevin.eirlsmmapi.repository.ItemRawRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -18,10 +18,10 @@ public class ItemQuantityMonitor {
     ItemRawRepo itemRawRepo;
 
     @Autowired
-    CompleteItemRepo completeItemRepo;
+    ItemCompleteRepo itemCompleteRepo;
 
     @Scheduled(fixedRate = 5000)
-    public void checkRawItemQuantities() {
+    public void checkItemRawQuantities() {
 
 //        System.out.println("Im running");
         List<ItemRaw> itemRawReorderList = new ArrayList<>();
@@ -39,24 +39,24 @@ public class ItemQuantityMonitor {
     }
 
     @Scheduled(fixedRate = 5000)
-    public void checkCompleteItemQuantities() {
+    public void checkItemCompleteQuantities() {
 
 //        System.out.println("Im running");
-        List<CompleteItem> completeItemReorderList = new ArrayList<>();
+        List<ItemComplete> itemCompleteReorderList = new ArrayList<>();
 
-        List<CompleteItem> completeItemList = completeItemRepo.findAll();
+        List<ItemComplete> itemCompleteList = itemCompleteRepo.findAll();
 
-        completeItemList.forEach(completeItem -> {
+        itemCompleteList.forEach(completeItem -> {
 
-            if (completeItem.getQuantity() <= completeItem.getCompleteItemReorder().getLevel()) {
-                completeItemReorderList.add(completeItem);
+            if (completeItem.getQuantity() <= completeItem.getItemCompleteReorder().getLevel()) {
+                itemCompleteReorderList.add(completeItem);
             }
         });
 
-        System.out.println(completeItemReorderList.toString());
+//        System.out.println(itemCompleteReorderList.toString());
     }
 
     public void sendSupplierOrder(List<ItemRaw> itemRawReorderList) {
-        System.out.println(itemRawReorderList.toString());
+//        System.out.println(itemRawReorderList.toString());
     }
 }
