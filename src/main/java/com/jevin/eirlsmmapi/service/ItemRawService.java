@@ -7,6 +7,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class ItemRawService {
 
@@ -18,6 +21,22 @@ public class ItemRawService {
         itemRaw.getItemRawReorder().setItemRaw(itemRaw);
         itemRawRepo.save(itemRaw);
         return new ResponseEntity<>(itemRaw, HttpStatus.OK);
+    }
+
+    public List<ItemRaw> getItemRawLowQuantities() {
+
+        List<ItemRaw> itemRawReorderList = new ArrayList<>();
+
+        List<ItemRaw> itemRawList = itemRawRepo.findAll();
+
+        itemRawList.forEach(rawItem -> {
+
+            if (rawItem.getQuantity() <= rawItem.getItemRawReorder().getLevel()) {
+                itemRawReorderList.add(rawItem);
+            }
+        });
+
+        return itemRawReorderList;
     }
 
 }

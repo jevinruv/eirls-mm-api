@@ -31,6 +31,11 @@ public class ItemRawController {
         return itemRawRepo.findAll();
     }
 
+    @GetMapping("/low-quantity")
+    public List<ItemRaw> getAllLowQuantity() {
+        return itemRawService.getItemRawLowQuantities();
+    }
+
     @PostMapping
     @PreAuthorize("hasRole('MM')")
     public ResponseEntity<?> addOrUpdate(@RequestBody ItemRaw itemRaw) {

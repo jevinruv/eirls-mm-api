@@ -31,6 +31,12 @@ public class ItemCompleteController {
         return itemCompleteRepo.findAll();
     }
 
+    @GetMapping("/low-quantity")
+    public List<ItemComplete> getAllLowQuantity() {
+        return itemCompleteService.getItemCompleteLowQuantities();
+    }
+
+
     @PostMapping
     @PreAuthorize("hasRole('MM')")
     public ResponseEntity<?> addOrUpdate(@RequestBody ItemComplete itemComplete) {
