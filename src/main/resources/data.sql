@@ -21,9 +21,9 @@ VALUES
 INSERT INTO item_raw (supplier_id, name, price, quantity, description)
 VALUES
   (1, 'Seat', 250, 22, 'Mountain Bicycle Seat'),
-  (1, 'Handle', 500, 30, 'Mountain Bicycle Handle'),
+  (1, 'Handle', 500, 130, 'Mountain Bicycle Handle'),
   (2, 'Tyre', 650, 35, 'Mountain Bicycle Tyre'),
-  (3, 'Brake', 400, 50, 'Mountain Bicycle Brake');
+  (3, 'Brake', 400, 150, 'Mountain Bicycle Brake');
 
 INSERT INTO item_raw_reorder (item_raw_id, level, quantity)
 VALUES
