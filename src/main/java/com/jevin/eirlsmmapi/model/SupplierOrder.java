@@ -1,5 +1,6 @@
 package com.jevin.eirlsmmapi.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
@@ -13,6 +14,8 @@ public class SupplierOrder {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String status;
+
+    @JsonFormat(pattern = "dd-MM-yyyy hh:mm:ss", timezone = "Asia/Colombo")
     private Date createdDate;
 
     @OneToMany(mappedBy = "supplierOrder", cascade = CascadeType.ALL)

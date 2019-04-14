@@ -13,7 +13,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.Optional;
+import java.util.TimeZone;
 
 @Service
 public class SupplierOrderService {
@@ -74,6 +83,17 @@ public class SupplierOrderService {
         return new ResponseEntity<>(this.supplierOrderItem, HttpStatus.OK);
     }
 
+    public ResponseEntity<?> newSupplierOrder() {
+
+        SupplierOrder supplierOrder = new SupplierOrder();
+
+
+        supplierOrder.setCreatedDate(getDate());
+        supplierOrder = supplierOrderRepo.save(supplierOrder);
+
+        return new ResponseEntity<>(supplierOrder, HttpStatus.OK);
+    }
+
     private void add(SupplierOrderForm supplierOrderForm, SupplierOrder supplierOrder, ItemRaw itemRaw) {
 
         supplierOrderItem = new SupplierOrderItem();
@@ -92,6 +112,24 @@ public class SupplierOrderService {
         supplierOrderItemRepo.save(supplierOrderItem);
     }
 
+    private Date getDate() {
+
+        Date date = new Date();
+
+        DateFormat df = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
+//        df.setTimeZone(TimeZone.getTimeZone("Asia/Colombo"));
+
+        String strDate = df.format(date);
+
+        Date newDate = null;
+        try {
+            newDate = df.parse(strDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return newDate;
+    }
 
 }
 

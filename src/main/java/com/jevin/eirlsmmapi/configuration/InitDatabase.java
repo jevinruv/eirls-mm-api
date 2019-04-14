@@ -17,10 +17,10 @@ public class InitDatabase implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        init();
+        initUserData();
     }
 
-    public void init() {
+    public void initUserData() {
 
         Set<String> adminRole = new HashSet<>();
         adminRole.add("admin");
@@ -55,6 +55,5 @@ public class InitDatabase implements CommandLineRunner {
         userService.createUser(supplier);
         userService.createUser(external);
     }
-
 
 }

@@ -31,6 +31,11 @@ public class SupplierOrderController {
         return repo.findAll();
     }
 
+    @PostMapping("/new")
+    public ResponseEntity<?> fetchCart() {
+        return supplierOrderService.newSupplierOrder();
+    }
+
     @PostMapping
     public ResponseEntity<?> addOrUpdate(@RequestBody SupplierOrderForm supplierOrderForm) {
         return supplierOrderService.addOrUpdate(supplierOrderForm);
