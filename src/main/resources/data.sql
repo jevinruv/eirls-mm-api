@@ -41,3 +41,15 @@ INSERT INTO item_complete_reorder (item_complete_id, level, quantity)
 VALUES
   (1, 50, 100),
   (2, 50, 100);
+
+
+INSERT INTO supplier_order (supplier_id, created_date, status)
+VALUES
+(1, '2019-04-14 11:42:50', 'SENT'),
+(3, '2019-04-14 12:42:50', 'RECEIVED');
+
+INSERT INTO supplier_order_item (supplier_order_id, item_raw_id, quantity)
+VALUES
+(1, 1, 300),
+(1, 2, 250),
+(2, 3, 350);

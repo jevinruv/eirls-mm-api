@@ -2,16 +2,16 @@ package com.jevin.eirlsmmapi.form;
 
 public class SupplierOrderForm {
 
-    private int SupplierOrderId;
+    private int supplierOrderId;
     private int itemRawId;
     private int quantity;
 
     public int getSupplierOrderId() {
-        return SupplierOrderId;
+        return supplierOrderId;
     }
 
     public void setSupplierOrderId(int supplierOrderId) {
-        SupplierOrderId = supplierOrderId;
+        this.supplierOrderId = supplierOrderId;
     }
 
     public int getItemRawId() {
