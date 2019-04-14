@@ -31,7 +31,7 @@ public class SupplierOrderController {
         return repo.findAll();
     }
 
-    @PostMapping("/new")
+    @GetMapping("/new")
     public ResponseEntity<?> newSupplierOrder() {
         return supplierOrderService.newSupplierOrder();
     }

@@ -96,9 +96,8 @@ public class SupplierOrderService {
     public ResponseEntity<?> newSupplierOrder() {
 
         SupplierOrder supplierOrder = new SupplierOrder();
-
-
         supplierOrder.setCreatedDate(getDate());
+
         supplierOrder = supplierOrderRepo.save(supplierOrder);
 
         return new ResponseEntity<>(supplierOrder, HttpStatus.OK);
