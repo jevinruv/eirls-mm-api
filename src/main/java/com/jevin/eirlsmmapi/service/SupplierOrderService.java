@@ -17,7 +17,9 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 public class SupplierOrderService {
@@ -32,9 +34,22 @@ public class SupplierOrderService {
     SupplierOrderItemRepo supplierOrderItemRepo;
 
     SupplierOrderItem supplierOrderItem = null;
+    int supplierOrderId = 0;
 
 
-    public ResponseEntity<?> addOrUpdate(SupplierOrderForm supplierOrderForm) {
+    public ResponseEntity<?> addOrUpdateOrderList(List<SupplierOrderForm> supplierOrderFormList) {
+
+        supplierOrderFormList.forEach(supplierOrderForm -> {
+            addOrUpdateOrderItem(supplierOrderForm);
+            supplierOrderId = supplierOrderForm.getSupplierOrderId();
+        });
+
+        SupplierOrder supplierOrder = supplierOrderRepo.findById(supplierOrderId).get();
+
+        return new ResponseEntity<>(supplierOrder, HttpStatus.OK);
+    }
+
+    private SupplierOrderItem addOrUpdateOrderItem(SupplierOrderForm supplierOrderForm) {
 
         ItemRaw itemRaw = itemRawRepo
                 .findById(supplierOrderForm.getItemRawId())
@@ -53,7 +68,7 @@ public class SupplierOrderService {
             add(supplierOrderForm, supplierOrder, itemRaw);
         }
 
-        return new ResponseEntity<>(this.supplierOrderItem, HttpStatus.OK);
+        return this.supplierOrderItem;
     }
 
     public ResponseEntity<?> deleteOrder(int id) {

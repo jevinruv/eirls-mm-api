@@ -5,7 +5,6 @@ import com.jevin.eirlsmmapi.model.SupplierOrder;
 import com.jevin.eirlsmmapi.repository.SupplierOrderRepo;
 import com.jevin.eirlsmmapi.service.SupplierOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,13 +32,13 @@ public class SupplierOrderController {
     }
 
     @PostMapping("/new")
-    public ResponseEntity<?> fetchCart() {
+    public ResponseEntity<?> newSupplierOrder() {
         return supplierOrderService.newSupplierOrder();
     }
 
     @PostMapping
-    public ResponseEntity<?> addOrUpdate(@RequestBody SupplierOrderForm supplierOrderForm) {
-        return supplierOrderService.addOrUpdate(supplierOrderForm);
+    public ResponseEntity<?> addOrUpdate(@RequestBody List<SupplierOrderForm> supplierOrderFormList) {
+        return supplierOrderService.addOrUpdateOrderList(supplierOrderFormList);
     }
 
     @DeleteMapping("/{id}")
