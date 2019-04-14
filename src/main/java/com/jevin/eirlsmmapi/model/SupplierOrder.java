@@ -23,7 +23,7 @@ public class SupplierOrder {
     private Set<SupplierOrderItem> supplierOrderItems;
 
     @ManyToOne
-    @JoinColumn(name = "supplier_id")
+    @JoinColumn
     private Supplier supplier;
 
     public int getId() {
