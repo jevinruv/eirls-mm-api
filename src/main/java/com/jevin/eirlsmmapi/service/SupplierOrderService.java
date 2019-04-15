@@ -2,6 +2,7 @@ package com.jevin.eirlsmmapi.service;
 
 import com.jevin.eirlsmmapi.exception.ResourceNotFoundException;
 import com.jevin.eirlsmmapi.form.SupplierOrderForm;
+import com.jevin.eirlsmmapi.model.ItemRaw;
 import com.jevin.eirlsmmapi.model.Supplier;
 import com.jevin.eirlsmmapi.model.SupplierOrder;
 import com.jevin.eirlsmmapi.model.SupplierOrderItem;
@@ -17,9 +18,7 @@ import org.springframework.stereotype.Service;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class SupplierOrderService {
@@ -121,6 +120,52 @@ public class SupplierOrderService {
         supplierOrderRepo.deleteById(id);
 
         return new ResponseEntity<>("", HttpStatus.OK);
+    }
+
+    public void createOrderByMonitor(List<ItemRaw> itemRawList) {
+
+        List<ItemRaw> itemRawListValidated = new ArrayList<>();
+        List<SupplierOrder> supplierOrderList = new ArrayList<>();
+        Set<Supplier> supplierList = new HashSet<>();
+
+        /* Check if Supplier Orders already exist */
+
+        itemRawList.forEach(itemRaw -> {
+            Optional<SupplierOrderItem> supplierOrderItem = supplierOrderItemRepo
+                    .findByItemRawIdAndSupplierOrderStatus(itemRaw.getId(), "SENT");
+
+            if (!supplierOrderItem.isPresent()) {
+                itemRawListValidated.add(itemRaw);
+                supplierList.add(itemRaw.getSupplier());
+            }
+        });
+
+
+        /* If supplier does not exist, create new orders */
+
+        supplierList.forEach(supplier -> {
+
+            Set<SupplierOrderItem> supplierOrderItems = new HashSet<>();
+
+            itemRawListValidated.forEach(itemRaw -> {
+                if (itemRaw.getSupplier().getId() == supplier.getId()) {
+                    SupplierOrderItem supplierOrderItem = new SupplierOrderItem();
+                    supplierOrderItem.setItemRaw(itemRaw);
+                    supplierOrderItem.setQuantity(itemRaw.getItemRawReorder().getQuantity());
+                    supplierOrderItems.add(supplierOrderItem);
+                }
+            });
+
+            supplierOrder = new SupplierOrder();
+            supplierOrder.setSupplierOrderItems(supplierOrderItems);
+            supplierOrder.setCreatedDate(getDate());
+            supplierOrder.setStatus("SENT");
+            supplierOrder.setSupplier(supplier);
+
+            supplierOrderList.add(supplierOrder);
+        });
+
+        supplierOrderRepo.saveAll(supplierOrderList);
     }
 
     private Date getDate() {

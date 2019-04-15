@@ -20,17 +20,19 @@ VALUES
 
 INSERT INTO item_raw (supplier_id, name, price, quantity, description)
 VALUES
-  (1, 'Seat', 250, 22, 'Mountain Bicycle Seat'),
-  (1, 'Handle', 500, 130, 'Mountain Bicycle Handle'),
-  (2, 'Tyre', 650, 35, 'Mountain Bicycle Tyre'),
+  (1, 'Seat', 250, 20, 'Mountain Bicycle Seat'),
+  (1, 'Handle', 500, 100, 'Mountain Bicycle Handle'),
+  (2, 'Tyre', 650, 20, 'Mountain Bicycle Tyre'),
+  (2, 'Pedal', 650, 20, 'Mountain Bicycle Pedal'),
   (3, 'Brake', 400, 150, 'Mountain Bicycle Brake');
 
 INSERT INTO item_raw_reorder (item_raw_id, level, quantity)
 VALUES
-  (1, 50, 250),
-  (2, 100, 300),
-  (3, 75, 350),
-  (4, 100, 450);
+  (1, 50, 150),
+  (2, 50, 150),
+  (3, 50, 150),
+  (4, 50, 150),
+  (5, 50, 150);
 
 INSERT INTO item_complete (name, price, quantity, description)
 VALUES
@@ -45,11 +47,12 @@ VALUES
 
 INSERT INTO supplier_order (supplier_id, created_date, status)
 VALUES
-(1, '2019-04-14 11:42:50', 'SENT'),
-(3, '2019-04-14 12:42:50', 'RECEIVED');
+  (1, '2019-04-14 11:42:50', 'SENT'),
+  (3, '2019-04-14 12:42:50', 'RECEIVED');
 
 INSERT INTO supplier_order_item (supplier_order_id, item_raw_id, quantity)
 VALUES
-(1, 1, 300),
-(1, 2, 250),
-(2, 4, 350);
+  (1, 1, 150),
+  (1, 2, 150),
+  (2, 4, 150);
+
