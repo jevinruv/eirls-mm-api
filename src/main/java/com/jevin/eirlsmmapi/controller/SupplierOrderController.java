@@ -5,6 +5,7 @@ import com.jevin.eirlsmmapi.model.SupplierOrder;
 import com.jevin.eirlsmmapi.repository.SupplierOrderRepo;
 import com.jevin.eirlsmmapi.service.SupplierOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,25 +32,15 @@ public class SupplierOrderController {
         return repo.findAll();
     }
 
-    @GetMapping("/new")
-    public ResponseEntity<?> newSupplierOrder() {
-        return supplierOrderService.newSupplierOrder();
-    }
-
     @PostMapping
-    public ResponseEntity<?> addOrUpdate(@RequestBody List<SupplierOrderForm> supplierOrderFormList) {
-        return supplierOrderService.addOrUpdateOrderList(supplierOrderFormList);
+    public ResponseEntity<?> addOrUpdate(@RequestBody SupplierOrderForm supplierOrderForm) {
+        SupplierOrder supplierOrder = supplierOrderService.addOrUpdate(supplierOrderForm);
+        return new ResponseEntity<>(supplierOrder, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteOrder(@PathVariable int id) {
         return supplierOrderService.deleteOrder(id);
     }
-
-    @DeleteMapping
-    public ResponseEntity<?> deleteOrderItem(@RequestBody SupplierOrderForm supplierOrderForm) {
-        return supplierOrderService.deleteOrderItem(supplierOrderForm);
-    }
-
 
 }

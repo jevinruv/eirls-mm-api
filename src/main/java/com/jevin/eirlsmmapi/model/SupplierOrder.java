@@ -26,6 +26,7 @@ public class SupplierOrder {
     @JoinColumn
     private Supplier supplier;
 
+
     public int getId() {
         return id;
     }
@@ -48,6 +49,7 @@ public class SupplierOrder {
 
     public void setSupplierOrderItems(Set<SupplierOrderItem> supplierOrderItems) {
         this.supplierOrderItems = supplierOrderItems;
+        this.supplierOrderItems.forEach(supplierOrderItem -> supplierOrderItem.setSupplierOrder(this));
     }
 
     public Date getCreatedDate() {

@@ -1,32 +1,43 @@
 package com.jevin.eirlsmmapi.form;
 
+import java.util.List;
+
 public class SupplierOrderForm {
 
-    private int supplierOrderId;
-    private int itemRawId;
-    private int quantity;
+    private int id;
+    private int supplierId;
+    private String status;
+    private List<SupplierOrderItemForm> supplierOrderItems;
 
-    public int getSupplierOrderId() {
-        return supplierOrderId;
+    public int getId() {
+        return id;
     }
 
-    public void setSupplierOrderId(int supplierOrderId) {
-        this.supplierOrderId = supplierOrderId;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public int getItemRawId() {
-        return itemRawId;
+    public int getSupplierId() {
+        return supplierId;
     }
 
-    public void setItemRawId(int itemRawId) {
-        this.itemRawId = itemRawId;
+    public void setSupplierId(int supplierId) {
+        this.supplierId = supplierId;
     }
 
-    public int getQuantity() {
-        return quantity;
+    public String getStatus() {
+        return status;
     }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public List<SupplierOrderItemForm> getSupplierOrderItems() {
+        return supplierOrderItems;
+    }
+
+    public void setSupplierOrderItems(List<SupplierOrderItemForm> supplierOrderItems) {
+        this.supplierOrderItems = supplierOrderItems;
     }
 }

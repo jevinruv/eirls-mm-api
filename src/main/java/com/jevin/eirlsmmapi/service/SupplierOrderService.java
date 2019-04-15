@@ -2,12 +2,13 @@ package com.jevin.eirlsmmapi.service;
 
 import com.jevin.eirlsmmapi.exception.ResourceNotFoundException;
 import com.jevin.eirlsmmapi.form.SupplierOrderForm;
-import com.jevin.eirlsmmapi.model.ItemRaw;
+import com.jevin.eirlsmmapi.model.Supplier;
 import com.jevin.eirlsmmapi.model.SupplierOrder;
 import com.jevin.eirlsmmapi.model.SupplierOrderItem;
 import com.jevin.eirlsmmapi.repository.ItemRawRepo;
 import com.jevin.eirlsmmapi.repository.SupplierOrderItemRepo;
 import com.jevin.eirlsmmapi.repository.SupplierOrderRepo;
+import com.jevin.eirlsmmapi.repository.SupplierRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,9 +18,8 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.HashSet;
+import java.util.Set;
 
 @Service
 public class SupplierOrderService {
@@ -28,47 +28,88 @@ public class SupplierOrderService {
     ItemRawRepo itemRawRepo;
 
     @Autowired
+    SupplierRepo supplierRepo;
+
+    @Autowired
     SupplierOrderRepo supplierOrderRepo;
 
     @Autowired
     SupplierOrderItemRepo supplierOrderItemRepo;
 
-    SupplierOrderItem supplierOrderItem = null;
-    int supplierOrderId = 0;
+    SupplierOrder supplierOrder = null;
 
 
-    public ResponseEntity<?> addOrUpdateOrderList(List<SupplierOrderForm> supplierOrderFormList) {
+    public SupplierOrder addOrUpdate(SupplierOrderForm supplierOrderForm) {
 
-        supplierOrderFormList.forEach(supplierOrderForm -> {
-            addOrUpdateOrderItem(supplierOrderForm);
-            supplierOrderId = supplierOrderForm.getSupplierOrderId();
-        });
+        Supplier supplier = supplierRepo
+                .findById(supplierOrderForm.getSupplierId())
+                .orElseThrow(() -> new ResourceNotFoundException("Supplier not found for this id :: " + supplierOrderForm.getSupplierId()));
 
-        SupplierOrder supplierOrder = supplierOrderRepo.findById(supplierOrderId).get();
-
-        return new ResponseEntity<>(supplierOrder, HttpStatus.OK);
-    }
-
-    private SupplierOrderItem addOrUpdateOrderItem(SupplierOrderForm supplierOrderForm) {
-
-        ItemRaw itemRaw = itemRawRepo
-                .findById(supplierOrderForm.getItemRawId())
-                .orElseThrow(() -> new ResourceNotFoundException("Item Raw not found for this id :: " + supplierOrderForm.getItemRawId()));
-
-        SupplierOrder supplierOrder = supplierOrderRepo
-                .findById(supplierOrderForm.getSupplierOrderId())
-                .orElseThrow(() -> new ResourceNotFoundException("Supplier Order not found for this id :: " + supplierOrderForm.getSupplierOrderId()));
-
-        Optional<SupplierOrderItem> supplierOrderItemOptional = supplierOrderItemRepo
-                .findByItemRawIdAndSupplierOrderId(supplierOrderForm.getItemRawId(), supplierOrderForm.getSupplierOrderId());
-
-        if (supplierOrderItemOptional.isPresent()) {
-            update(supplierOrderForm, supplierOrderItemOptional);
+        if (supplierOrderForm.getId() != 0) {
+            supplierOrder = update(supplierOrderForm, supplier);
         } else {
-            add(supplierOrderForm, supplierOrder, itemRaw);
+            supplierOrder = add(supplierOrderForm, supplier);
         }
 
-        return this.supplierOrderItem;
+        return supplierOrder;
+    }
+
+    private SupplierOrder add(SupplierOrderForm supplierOrderForm, Supplier supplier) {
+
+        Set<SupplierOrderItem> supplierOrderItems = new HashSet<>();
+
+        supplierOrderForm.getSupplierOrderItems().forEach(supplierOrderItemForm -> {
+
+            supplier.getItemsRaw().forEach(itemRaw -> {
+
+                if (itemRaw.getId() == supplierOrderItemForm.getItemRawId()) {
+
+                    SupplierOrderItem supplierOrderItem = new SupplierOrderItem();
+                    supplierOrderItem.setItemRaw(itemRaw);
+                    supplierOrderItem.setQuantity(supplierOrderItemForm.getQuantity());
+                    supplierOrderItems.add(supplierOrderItem);
+                }
+            });
+        });
+
+        supplierOrder = new SupplierOrder();
+        supplierOrder.setSupplierOrderItems(supplierOrderItems);
+        supplierOrder.setCreatedDate(getDate());
+        supplierOrder.setStatus(supplierOrderForm.getStatus());
+        supplierOrder.setSupplier(supplier);
+
+        return supplierOrderRepo.save(supplierOrder);
+    }
+
+    private SupplierOrder update(SupplierOrderForm supplierOrderForm, Supplier supplier) {
+
+        supplierOrder = supplierOrderRepo
+                .findById(supplierOrderForm.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Supplier Order not found for this id :: " + supplierOrderForm.getId()));
+
+        Set<SupplierOrderItem> supplierOrderItems = new HashSet<>();
+
+        supplierOrderForm.getSupplierOrderItems().forEach(supplierOrderItemForm -> {
+
+            supplier.getItemsRaw().forEach(itemRaw -> {
+
+                if (itemRaw.getId() == supplierOrderItemForm.getItemRawId()) {
+
+                    SupplierOrderItem supplierOrderItem = new SupplierOrderItem();
+                    supplierOrderItem.setItemRaw(itemRaw);
+                    supplierOrderItem.setQuantity(supplierOrderItemForm.getQuantity());
+                    supplierOrderItems.add(supplierOrderItem);
+                }
+            });
+        });
+
+
+        supplierOrderItemRepo.deleteAllBySupplierOrderId(supplierOrderForm.getId());
+
+        supplierOrder.getSupplierOrderItems().clear();
+        supplierOrder.setSupplierOrderItems(supplierOrderItems);
+
+        return supplierOrderRepo.save(supplierOrder);
     }
 
     public ResponseEntity<?> deleteOrder(int id) {
@@ -80,45 +121,6 @@ public class SupplierOrderService {
         supplierOrderRepo.deleteById(id);
 
         return new ResponseEntity<>("", HttpStatus.OK);
-    }
-
-    public ResponseEntity<?> deleteOrderItem(SupplierOrderForm supplierOrderForm) {
-
-        this.supplierOrderItem = supplierOrderItemRepo
-                .findByItemRawIdAndSupplierOrderId(supplierOrderForm.getItemRawId(), supplierOrderForm.getSupplierOrderId())
-                .orElseThrow(() -> new ResourceNotFoundException("Supplier Order Item not found for this id :: " + supplierOrderForm.getSupplierOrderId()));
-
-        supplierOrderItemRepo.deleteById(this.supplierOrderItem.getId());
-
-        return new ResponseEntity<>(this.supplierOrderItem, HttpStatus.OK);
-    }
-
-    public ResponseEntity<?> newSupplierOrder() {
-
-        SupplierOrder supplierOrder = new SupplierOrder();
-        supplierOrder.setCreatedDate(getDate());
-
-        supplierOrder = supplierOrderRepo.save(supplierOrder);
-
-        return new ResponseEntity<>(supplierOrder, HttpStatus.OK);
-    }
-
-    private void add(SupplierOrderForm supplierOrderForm, SupplierOrder supplierOrder, ItemRaw itemRaw) {
-
-        supplierOrderItem = new SupplierOrderItem();
-        supplierOrderItem.setQuantity(supplierOrderForm.getQuantity());
-        supplierOrderItem.setSupplierOrder(supplierOrder);
-        supplierOrderItem.setItemRaw(itemRaw);
-
-        supplierOrderItemRepo.save(supplierOrderItem);
-    }
-
-    private void update(SupplierOrderForm supplierOrderForm, Optional<SupplierOrderItem> supplierOrderItemOptional) {
-
-        supplierOrderItem = supplierOrderItemOptional.get();
-        supplierOrderItem.setQuantity(supplierOrderForm.getQuantity());
-
-        supplierOrderItemRepo.save(supplierOrderItem);
     }
 
     private Date getDate() {
