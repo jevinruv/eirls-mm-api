@@ -40,7 +40,8 @@ public class AuthController {
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody User user) {
 
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
+        Authentication authentication = authenticationManager
+                .authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         String jwt = jwtProvider.generateJwtToken(authentication);
@@ -60,7 +61,6 @@ public class AuthController {
             return new ResponseEntity<>(new ResponseMessage("Email already exists"), HttpStatus.BAD_REQUEST);
         }
 
-        // If user does not exist create account
         userService.createUser(userSignUp);
 
         return new ResponseEntity<>(new ResponseMessage("User registered successfully"), HttpStatus.OK);

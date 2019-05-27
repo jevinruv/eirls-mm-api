@@ -33,7 +33,7 @@ public class JwtAuthTokenFilter extends OncePerRequestFilter {
 
         try {
             String jwt = getJwt(request); // get JWT token from header
-            if(jwt != null && tokenProvider.validateJwtToken(jwt)){ // validate JWT
+            if (jwt != null && tokenProvider.validateJwtToken(jwt)) { // validate JWT
                 String username = tokenProvider.getUserNameFromJwtToken(jwt); // parse username from validated JWT
 
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username); // load data from users table
@@ -44,18 +44,17 @@ public class JwtAuthTokenFilter extends OncePerRequestFilter {
 
                 SecurityContextHolder.getContext().setAuthentication(authentication); // set the authentication object to Security Context
             }
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             logger.error("Cannot set user authentication -> Message: {}", e);
         }
 
         filterChain.doFilter(request, response);
     }
 
-    private String getJwt(HttpServletRequest request){
+    private String getJwt(HttpServletRequest request) {
         String authHeader = request.getHeader("Authorization");
 
-        if(authHeader != null && authHeader.startsWith("Bearer")){
+        if (authHeader != null && authHeader.startsWith("Bearer")) {
             return authHeader.replace("Bearer ", "");
         }
 

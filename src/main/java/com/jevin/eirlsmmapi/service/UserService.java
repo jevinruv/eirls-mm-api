@@ -29,7 +29,11 @@ public class UserService {
     public void createUser(UserSignUp userSignUp) {
 
 
-        User user = new User(userSignUp.getName(), userSignUp.getUsername(), userSignUp.getEmail(), encoder.encode(userSignUp.getPassword()));
+        User user = new User(
+                userSignUp.getName(),
+                userSignUp.getUsername(),
+                userSignUp.getEmail(),
+                encoder.encode(userSignUp.getPassword()));
         Set<String> strRoles = userSignUp.getRole();
         Set<Role> roles = new HashSet<>();
 

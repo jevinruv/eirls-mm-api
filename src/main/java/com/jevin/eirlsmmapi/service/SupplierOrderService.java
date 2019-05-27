@@ -152,6 +152,7 @@ public class SupplierOrderService {
                     SupplierOrderItem supplierOrderItem = new SupplierOrderItem();
                     supplierOrderItem.setItemRaw(itemRaw);
                     supplierOrderItem.setQuantity(itemRaw.getItemRawReorder().getQuantity());
+
                     supplierOrderItems.add(supplierOrderItem);
                 }
             });
