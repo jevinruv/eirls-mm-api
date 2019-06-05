@@ -1,6 +1,7 @@
 package com.jevin.eirlsmmapi.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.persistence.*;
 
@@ -10,7 +11,9 @@ public class SupplierOrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private int quantity;
+    private int quantityOrdered;
+
+    private int quantityReceived;
 
     @ManyToOne
     @JoinColumn
@@ -29,13 +32,6 @@ public class SupplierOrderItem {
         this.id = id;
     }
 
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
 
     public SupplierOrder getSupplierOrder() {
         return supplierOrder;
@@ -51,5 +47,21 @@ public class SupplierOrderItem {
 
     public void setItemRaw(ItemRaw itemRaw) {
         this.itemRaw = itemRaw;
+    }
+
+    public int getQuantityOrdered() {
+        return quantityOrdered;
+    }
+
+    public void setQuantityOrdered(int quantityOrdered) {
+        this.quantityOrdered = quantityOrdered;
+    }
+
+    public int getQuantityReceived() {
+        return quantityReceived;
+    }
+
+    public void setQuantityReceived(int quantityReceived) {
+        this.quantityReceived = quantityReceived;
     }
 }

@@ -18,7 +18,7 @@ public class SupplierOrder {
     @JsonFormat(pattern = "dd-MM-yyyy hh:mm:ss", timezone = "Asia/Colombo")
     private Date createdDate;
 
-    @OneToMany(mappedBy = "supplierOrder", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "supplierOrder", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonIgnoreProperties("supplierOrder")
     private Set<SupplierOrderItem> supplierOrderItems;
 
