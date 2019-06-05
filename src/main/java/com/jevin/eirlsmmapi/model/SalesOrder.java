@@ -23,7 +23,7 @@ public class SalesOrder {
     @JsonFormat(pattern = "dd-MM-yyyy hh:mm:ss", timezone = "Asia/Colombo")
     private Date createdDate;
 
-    @OneToMany(mappedBy = "salesOrder", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "salesOrder", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonIgnoreProperties("salesOrder")
     private Set<SalesOrderItem> salesOrderItems;
 

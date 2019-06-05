@@ -23,4 +23,14 @@ public class SalesOrderMonitor {
             salesOrderService.createSalesOrder(salesOrderList);
         }
     }
+
+    @Scheduled(fixedDelay = 10000)
+    public void checkSalesOrdersStatus() {
+
+        List<SalesOrder> salesOrderList = salesOrderService.getPendingSalesOrders();
+
+        if (!salesOrderList.isEmpty()) {
+            salesOrderService.validateOrderByTime(salesOrderList);
+        }
+    }
 }

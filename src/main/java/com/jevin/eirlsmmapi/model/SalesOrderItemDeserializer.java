@@ -9,7 +9,6 @@ import com.jevin.eirlsmmapi.repository.ItemCompleteRepo;
 import com.jevin.eirlsmmapi.repository.ItemRawRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import java.io.IOException;
 import java.util.Optional;

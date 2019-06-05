@@ -20,11 +20,11 @@ VALUES
 
 INSERT INTO item_raw (supplier_id, name, price, quantity, description)
 VALUES
-  (1, 'Seat', 250, 20, 'Mountain Bicycle Seat'),
-  (1, 'Handle', 500, 100, 'Mountain Bicycle Handle'),
-  (2, 'Tyre', 650, 20, 'Mountain Bicycle Tyre'),
-  (2, 'Pedal', 650, 20, 'Mountain Bicycle Pedal'),
-  (3, 'Brake', 400, 150, 'Mountain Bicycle Brake');
+  (1, 'Seat', 250, 500, 'Mountain Bicycle Seat'),
+  (1, 'Handle', 500, 500, 'Mountain Bicycle Handle'),
+  (2, 'Tyre', 650, 500, 'Mountain Bicycle Tyre'),
+  (2, 'Pedal', 650, 500, 'Mountain Bicycle Pedal'),
+  (3, 'Brake', 400, 500, 'Mountain Bicycle Brake');
 
 INSERT INTO item_raw_reorder (item_raw_id, level, quantity)
 VALUES
@@ -36,8 +36,8 @@ VALUES
 
 INSERT INTO item_complete (name, price, quantity, description)
 VALUES
-  ('Mountain Bicycle', 10000, 80, 'Mountain Bicycle Blue'),
-  ('Ladies Bicycle', 8000, 30, 'Ladies Bicycle Green');
+  ('Mountain Bicycle', 10000, 500, 'Mountain Bicycle Blue'),
+  ('Ladies Bicycle', 8000, 500, 'Ladies Bicycle Green');
 
 INSERT INTO item_complete_reorder (item_complete_id, level, quantity)
 VALUES
