@@ -3,7 +3,7 @@ package com.jevin.eirlsmmapi.form;
 public class SupplierOrderItemForm {
 
     private int itemRawId;
-    private int quantity;
+    private int quantityOrdered;
 
     public int getItemRawId() {
         return itemRawId;
@@ -13,11 +13,11 @@ public class SupplierOrderItemForm {
         this.itemRawId = itemRawId;
     }
 
-    public int getQuantity() {
-        return quantity;
+    public int getQuantityOrdered() {
+        return quantityOrdered;
     }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
+    public void setQuantityOrdered(int quantityOrdered) {
+        this.quantityOrdered = quantityOrdered;
     }
 }
