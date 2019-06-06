@@ -24,12 +24,12 @@ public class GoodReceivedService {
 
         counter = 0;
 
-        supplierOrderReceivedForm.getSupplierOrderItems().forEach(supplierOrderItemForm -> {
+        supplierOrderReceivedForm.getSupplierOrderItems().forEach(supplierOrderItemReceivedForm -> {
 
             supplierOrder.getSupplierOrderItems().forEach(supplierOrderItem -> {
 
-                if (supplierOrderItemForm.getItemRawId() == supplierOrderItem.getItemRaw().getId()) {
-                    supplierOrderItem.setQuantityReceived(supplierOrderItemForm.getQuantity());
+                if (supplierOrderItemReceivedForm.getItemRawId() == supplierOrderItem.getItemRaw().getId()) {
+                    supplierOrderItem.setQuantityReceived(supplierOrderItemReceivedForm.getQuantityReceived());
                     counter++;
                 }
 

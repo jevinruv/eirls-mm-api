@@ -5,7 +5,7 @@ import java.util.List;
 public class SupplierOrderReceivedForm {
 
     private int supplierOrderId;
-    private List<SupplierOrderItemForm> supplierOrderItems;
+    private List<SupplierOrderItemReceivedForm> supplierOrderItems;
 
     public int getSupplierOrderId() {
         return supplierOrderId;
@@ -15,11 +15,11 @@ public class SupplierOrderReceivedForm {
         this.supplierOrderId = supplierOrderId;
     }
 
-    public List<SupplierOrderItemForm> getSupplierOrderItems() {
+    public List<SupplierOrderItemReceivedForm> getSupplierOrderItems() {
         return supplierOrderItems;
     }
 
-    public void setSupplierOrderItems(List<SupplierOrderItemForm> supplierOrderItems) {
+    public void setSupplierOrderItems(List<SupplierOrderItemReceivedForm> supplierOrderItems) {
         this.supplierOrderItems = supplierOrderItems;
     }
 }

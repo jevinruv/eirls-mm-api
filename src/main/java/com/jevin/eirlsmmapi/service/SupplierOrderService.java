@@ -65,7 +65,7 @@ public class SupplierOrderService {
 
                     SupplierOrderItem supplierOrderItem = new SupplierOrderItem();
                     supplierOrderItem.setItemRaw(itemRaw);
-                    supplierOrderItem.setQuantityOrdered(supplierOrderItemForm.getQuantity());
+                    supplierOrderItem.setQuantityOrdered(supplierOrderItemForm.getQuantityOrdered());
                     supplierOrderItem.setQuantityReceived(0);
                     supplierOrderItems.add(supplierOrderItem);
                 }
@@ -97,7 +97,7 @@ public class SupplierOrderService {
 
                     SupplierOrderItem supplierOrderItem = new SupplierOrderItem();
                     supplierOrderItem.setItemRaw(itemRaw);
-                    supplierOrderItem.setQuantityOrdered(supplierOrderItemForm.getQuantity());
+                    supplierOrderItem.setQuantityOrdered(supplierOrderItemForm.getQuantityOrdered());
                     supplierOrderItem.setQuantityReceived(0);
                     supplierOrderItems.add(supplierOrderItem);
                 }
