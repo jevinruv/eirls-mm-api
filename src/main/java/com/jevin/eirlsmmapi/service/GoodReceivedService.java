@@ -21,7 +21,6 @@ public class GoodReceivedService {
                 .findByIdAndStatus(supplierOrderReceivedForm.getSupplierOrderId(), "SENT")
                 .orElseThrow(() -> new ResourceNotFoundException("Supplier Order not found for this id or Invalid :: " + supplierOrderReceivedForm.getSupplierOrderId()));
 
-
         counter = 0;
 
         supplierOrderReceivedForm.getSupplierOrderItems().forEach(supplierOrderItemReceivedForm -> {
@@ -36,9 +35,11 @@ public class GoodReceivedService {
             });
         });
 
-        if (counter == supplierOrderReceivedForm.getSupplierOrderItems().size()) {
+        if (counter == supplierOrder.getSupplierOrderItems().size()) {
             supplierOrder.setStatus("RECEIVED");
             supplierOrderRepo.save(supplierOrder);
+        } else {
+            throw new ResourceNotFoundException("Supplier Order items quantity does not match, required " + supplierOrder.getSupplierOrderItems().size() + " got " + counter);
         }
 
     }
