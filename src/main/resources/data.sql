@@ -47,12 +47,12 @@ VALUES
 
 INSERT INTO supplier_order (supplier_id, created_date, status)
 VALUES
-  (1, '2019-04-14 11:42:50', 'SENT'),
-  (3, '2019-04-14 12:42:50', 'RECEIVED');
+  (1, '2019-04-14 11:42:50', 'RECEIVED'),
+  (3, '2019-04-14 12:42:50', 'SENT');
 
 INSERT INTO supplier_order_item (supplier_order_id, item_raw_id, quantity_ordered, quantity_received)
 VALUES
-  (1, 1, 150, 0),
-  (1, 2, 150, 0),
-  (2, 4, 150, 0);
+  (1, 1, 150, 100),
+  (1, 2, 150, 100),
+  (2, 4, 150, 50);
 
