@@ -32,6 +32,24 @@ public class SupplierOrderController {
         return repo.findAll();
     }
 
+    @GetMapping("/received")
+    public ResponseEntity<?> getAllReceived() {
+        Optional<List<SupplierOrder>> supplierOrderList = repo.findAllByStatus("RECEIVED");
+        return new ResponseEntity<>(supplierOrderList, HttpStatus.OK);
+    }
+
+    @GetMapping("/sent")
+    public ResponseEntity<?> getAllSent() {
+        Optional<List<SupplierOrder>> supplierOrderList = repo.findAllByStatus("SENT");
+        return new ResponseEntity<>(supplierOrderList, HttpStatus.OK);
+    }
+
+    @GetMapping("/added")
+    public ResponseEntity<?> getAllAdded() {
+        Optional<List<SupplierOrder>> supplierOrderList = repo.findAllByStatus("ADDED");
+        return new ResponseEntity<>(supplierOrderList, HttpStatus.OK);
+    }
+
     @PostMapping
     public ResponseEntity<?> addOrUpdate(@RequestBody SupplierOrderForm supplierOrderForm) {
         SupplierOrder supplierOrder = supplierOrderService.addOrUpdate(supplierOrderForm);
