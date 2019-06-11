@@ -22,7 +22,7 @@ public class GoodsReceivedController {
         return new ResponseEntity<>("Success", HttpStatus.OK);
     }
 
-    @PostMapping("/add-stock/{id}")
+    @GetMapping("/add-stock/{id}")
     public ResponseEntity<?> addToStock(@PathVariable int id) {
         SupplierOrder supplierOrder = goodReceivedService.addToStock(id);
         return new ResponseEntity<>(supplierOrder, HttpStatus.OK);
