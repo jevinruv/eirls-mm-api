@@ -28,8 +28,8 @@ public class SalesOrderService {
     @Autowired
     ItemRawRepo itemRawRepo;
 
-    //    final String salesOrderUrl = "http://eirls.herokuapp.com/materialEnquiry";
-    final String salesOrderUrl = "https://api.myjson.com/bins/ebbjn";
+    final String salesOrderUrl = "http://eirls.herokuapp.com/materialEnquiry";
+//    final String salesOrderUrl = "https://api.myjson.com/bins/ebbjn";
 
     public List<SalesOrder> getSalesOrders() {
 
