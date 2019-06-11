@@ -54,5 +54,5 @@ INSERT INTO supplier_order_item (supplier_order_id, item_raw_id, quantity_ordere
 VALUES
   (1, 1, 150, 100),
   (1, 2, 150, 100),
-  (2, 4, 150, 50);
+  (2, 4, 150, 0);
 
