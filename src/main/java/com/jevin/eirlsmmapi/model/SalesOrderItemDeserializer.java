@@ -67,7 +67,9 @@ public class SalesOrderItemDeserializer extends JsonDeserializer<SalesOrderItem>
             }
 
         } else {
+
             Optional<ItemComplete> itemCompleteOptional = itemCompleteRepo.findById(id);
+
             if (itemCompleteOptional.isPresent()) {
                 ItemComplete itemComplete = itemCompleteOptional.get();
                 salesOrderItem.setItemComplete(itemComplete);

@@ -17,7 +17,7 @@ import java.util.Set;
 public class SalesOrderDeserializer extends JsonDeserializer<SalesOrder> {
 
     @Override
-    public SalesOrder deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JsonProcessingException {
+    public SalesOrder deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
 
         JsonNode node = p.getCodec().readTree(p);
 
@@ -30,8 +30,9 @@ public class SalesOrderDeserializer extends JsonDeserializer<SalesOrder> {
         Set<SalesOrderItem> salesOrderItems = parser.readValueAs(new TypeReference<Set<SalesOrderItem>>() {
         });
 
-        Date date = convertDate(dateOld);
+//        Date date = convertDate(dateOld);
 
+        Date date = new Date(dateOld);
 
         SalesOrder salesOrder = new SalesOrder();
         salesOrder.setSalesOrderId(id);

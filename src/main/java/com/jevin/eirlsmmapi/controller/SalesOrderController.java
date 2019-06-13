@@ -1,12 +1,13 @@
 package com.jevin.eirlsmmapi.controller;
 
+import com.jevin.eirlsmmapi.exception.ResourceNotFoundException;
+import com.jevin.eirlsmmapi.form.SalesOrderStatusForm;
 import com.jevin.eirlsmmapi.model.SalesOrder;
 import com.jevin.eirlsmmapi.repository.SalesOrderRepo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,6 +28,23 @@ public class SalesOrderController {
     @GetMapping
     public List<SalesOrder> getAll() {
         return salesOrderRepo.findAll();
+    }
+
+    @PutMapping
+    public ResponseEntity<?> updateStatus(@RequestBody SalesOrderStatusForm salesOrderStatusForm) {
+
+        SalesOrder salesOrder = salesOrderRepo
+                .findById(salesOrderStatusForm.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Sales Order not found for this id or Invalid :: " + salesOrderStatusForm.getId()));
+
+        if (!salesOrderStatusForm.getStatus().equals("cancelled")) {
+            throw new ResourceNotFoundException("Sales Order Status Invalid :: " + salesOrderStatusForm.getStatus());
+        }
+
+        salesOrder.setStatus(salesOrderStatusForm.getStatus());
+        SalesOrder savedSalesOrder = salesOrderRepo.save(salesOrder);
+
+        return new ResponseEntity<>(savedSalesOrder, HttpStatus.OK);
     }
 
 }
