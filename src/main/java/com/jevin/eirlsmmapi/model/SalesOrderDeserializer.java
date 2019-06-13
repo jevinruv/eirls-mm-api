@@ -30,9 +30,7 @@ public class SalesOrderDeserializer extends JsonDeserializer<SalesOrder> {
         Set<SalesOrderItem> salesOrderItems = parser.readValueAs(new TypeReference<Set<SalesOrderItem>>() {
         });
 
-//        Date date = convertDate(dateOld);
-
-        Date date = new Date(dateOld);
+        Date date = getDate(dateOld);
 
         SalesOrder salesOrder = new SalesOrder();
         salesOrder.setSalesOrderId(id);
@@ -41,6 +39,21 @@ public class SalesOrderDeserializer extends JsonDeserializer<SalesOrder> {
         salesOrder.setSalesOrderItems(salesOrderItems);
 
         return salesOrder;
+    }
+
+    private Date getDate(String strDate) {
+
+        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss"); // wanted format
+        Date convertedDate = null;
+
+        try {
+            convertedDate = dateFormat.parse(strDate);
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return convertedDate;
     }
 
     private Date convertDate(String strDate) {
