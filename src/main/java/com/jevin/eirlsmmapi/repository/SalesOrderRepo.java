@@ -11,6 +11,6 @@ import java.util.Optional;
 public interface SalesOrderRepo extends JpaRepository<SalesOrder, Integer> {
     Optional<SalesOrder> findBySalesOrderId(int salesOrderId);
 
-        Optional<List<SalesOrder>> findAllByStatus(String status);
+    Optional<List<SalesOrder>> findAllByStatus(String status);
 //    List<SalesOrder> findAllByStatus(String status);
 }

@@ -1,8 +1,9 @@
 package com.jevin.eirlsmmapi.service;
 
-import com.jevin.eirlsmmapi.form.Bom;
-import com.jevin.eirlsmmapi.form.BomItem;
+import com.jevin.eirlsmmapi.model.Bom;
+import com.jevin.eirlsmmapi.model.BomItem;
 import com.jevin.eirlsmmapi.model.ItemRaw;
+import com.jevin.eirlsmmapi.repository.BomRepo;
 import com.jevin.eirlsmmapi.repository.ItemRawRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
@@ -18,9 +19,12 @@ public class BomService {
     @Autowired
     ItemRawRepo itemRawRepo;
 
+    @Autowired
+    BomRepo bomRepo;
+
     final String bomUrl = "https://eirlss-production.herokuapp.com/public/api/billofmaterials";
 
-    private String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImRmZmIwZDQ4NjMxODg1OTBmZDEyZTlhMDUxYTkxY2FkNWJlNTk5NGFiZmJiNTEzOTAxYmU4ZWZkMWU3MDFiNThlZGM4NTIyMGE0NGQzNjc2In0.eyJhdWQiOiIzIiwianRpIjoiZGZmYjBkNDg2MzE4ODU5MGZkMTJlOWEwNTFhOTFjYWQ1YmU1OTk0YWJmYmI1MTM5MDFiZThlZmQxZTcwMWI1OGVkYzg1MjIwYTQ0ZDM2NzYiLCJpYXQiOjE1NjA0NDMwNTEsIm5iZiI6MTU2MDQ0MzA1MSwiZXhwIjoxNTkyMDY1NDUxLCJzdWIiOiIiLCJzY29wZXMiOlsiKiJdfQ.RTb1XAtAJo32DEen06rAAzKqCdD0doB3yFbkMC1xzWhlOrKsfBxJrQXzCkLMWNXeWsSyGnGqDKmOj-rExEBGy2usIj334_PBYChVU5f08B5DtYfVduBlNWTdb6vCX4u13bq3yeasSN574fj7Hg4U7hFZx9AIowuV8WMAxd2F8Veg0ty0PxEwYn4xjQl6tUrfjbwOrFAdc19fI754FZhEYzkGdtfr_oDdCBNHlz1_Gx_GQboJPYCEJ6uE7jsvh7C9gtRwM3BsNdtOBwjDNi9zy8YYvzDyb2q2AKbjm2AUQ1jR_m-gLzs1h1x6zerqCwPMxUeg2xSTKDET33IwAuzgBEJqlZGcd9fYmJklV9RXoyz-XpjLHyLv9jDKiQdE6CjpzSYzFjcMsa_0mqIc2zcBT-hcZA4vs4Ttg_977yYZHmP3UioxIv_A0uh2rQElPsn-4Udcmf7t-qEbmfhh54BKZGDzr_dBHOnLOtEA46OL1xUh7eRSio2BxKOIjmW0ptUdG9s2ew9w8UBxFe_jKmtXvD_BFXBzVNVYu1jWcJyTgSHNimiJwLSmFi3jfYD8p9LYWizGEW4uABBQ-QjsqbJ1z1gNXv9ijtUE6O2f8GWJApWWd2Cr-LFPH35rzUn3FeLHCS6A8zNWe2VW4BTzxz5dOatP48J_X-zlZs_iIwsXsNc";
+    private String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6Ijg0MmI1NWE2YjMwMmIwNDZjZjkyZTZiYjA0ZjJhOTg0OTYzNmMxMzViYTczYjA1ZGU1ZmQxZmZlM2U3MzllZjk1ZTJkYzlhZTBjYjU2ZWY5In0.eyJhdWQiOiIzIiwianRpIjoiODQyYjU1YTZiMzAyYjA0NmNmOTJlNmJiMDRmMmE5ODQ5NjM2YzEzNWJhNzNiMDVkZTVmZDFmZmUzZTczOWVmOTVlMmRjOWFlMGNiNTZlZjkiLCJpYXQiOjE1NjA1MDEwODgsIm5iZiI6MTU2MDUwMTA4OCwiZXhwIjoxNTkyMTIzNDg4LCJzdWIiOiIiLCJzY29wZXMiOlsiKiJdfQ.UTMkwNzMatnZPiLzkl3rexFidYTIvMPv5pUs_GHz8YT_pVYMd3M08505R9rB2VugKghX-IMNtrYUqru1A-dk4YkSSXA-PgNyf7T4pqtSnT7k17dXpABKR7jlu2l_27MyOARP_E67HhXeITLdYGZSmvk7ruHxMfNrQ-YFJP8k253TT80Ly9Q89gK3TAoTG9SmwG42sgYeJ4q320XXrNBDffQaXoL_aomSJCUrms7uFIyaIMfcv9KgTgpvK0r0KNtO5nMlxvTYJzw4FjMAdCBYTPyPYQa8YhW5wnfgqgkaOgMuwJUo8kXbAorOSObeSBFOQ5ApozgxU0oxLy6ep5MyVU0OE6BuH1oZ9aZALA3x5hijcN1wVcmOWDu5-XW3YUa-wBDkYWI_MPj-1LLDigzBj8XtVfN-z64hX8hrvRZrk4dDg7UaX9TKyepPzstEoUC9hLZtLGgXWRi1O85TjgXvqa8p22TKGDJ6MDj7gz7UKK7rmiozeKyhDJwKt0XSlpfCH-gCGCXYfXW17kYZiOZ8sy7AYplPhGN674HxNRbHssdW07dH_42yjepb7jyIKlJFWsc1PBJyGYz_hQJ3s0VymKGGjpqa0IqrFFX8QLEqlDlj8agVeJouTCRttxtgf8b5mjDK0apAjV-t5vLPvipVPwSdIEY4kOEkdnpp5OTYK24";
 
     private int counter = 0;
 
@@ -45,6 +49,19 @@ public class BomService {
         return bomList;
     }
 
+    public void createBom(List<Bom> bomList) {
+
+        bomList.forEach(bom -> {
+
+            Optional<Bom> bomOptional = bomRepo.findByProductionBomId(bom.getProductionBomId());
+
+            if (!bomOptional.isPresent()) {
+                bomRepo.save(bom);
+            }
+        });
+
+    }
+
     public void validateOrder(List<Bom> bomList) {
 
         bomList.forEach(bom -> {
@@ -59,9 +76,9 @@ public class BomService {
 
     private void checkQuantity(Bom bom) {
 
-        bom.getBomItemList().forEach(bomItem -> {
+        bom.getBomItems().forEach(bomItem -> {
 
-            Optional<ItemRaw> itemRawOptional = itemRawRepo.findById(bomItem.getItemRawId());
+            Optional<ItemRaw> itemRawOptional = itemRawRepo.findById(bomItem.getItemRaw().getId());
 
             if (itemRawOptional.isPresent()) {
 
@@ -74,8 +91,8 @@ public class BomService {
 
         });
 
-        if (counter == bom.getBomItemList().size()) {
-            reduceItems(bom.getBomItemList());
+        if (counter == bom.getBomItems().size()) {
+            reduceItems(bom.getBomItems());
             updateStatus(bom);
         }
 
@@ -85,7 +102,7 @@ public class BomService {
 
         bomItemList.forEach(bomItem -> {
             int quantity = bomItem.getQuantity();
-            int id = bomItem.getItemRawId();
+            int id = bomItem.getItemRaw().getId();
 
             ItemRaw itemRaw = itemRawRepo.findById(id).get();
             int currentQuantity = itemRaw.getQuantity();
@@ -107,7 +124,7 @@ public class BomService {
         headers.setContentType(MediaType.APPLICATION_JSON);
 
         HttpEntity<Map> requestEntity = new HttpEntity<>(payload, headers);
-        ResponseEntity<Object> result = template.exchange(bomUrl + bom.getBomId(), HttpMethod.PUT, requestEntity, Object.class);
+        ResponseEntity<Object> result = template.exchange(bomUrl + bom.getProductionBomId(), HttpMethod.PUT, requestEntity, Object.class);
 
         if (!result.getStatusCode().is2xxSuccessful()) {
 //            return null;

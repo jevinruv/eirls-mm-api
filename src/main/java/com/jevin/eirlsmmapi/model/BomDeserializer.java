@@ -1,4 +1,4 @@
-package com.jevin.eirlsmmapi.form;
+package com.jevin.eirlsmmapi.model;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -27,7 +27,7 @@ public class BomDeserializer extends JsonDeserializer<Bom> {
         Bom bom = new Bom();
         bom.setId(id);
         bom.setStatus(status);
-        bom.setBomItemList(bomItems);
+        bom.setBomItems(bomItems);
 
         return bom;
     }
