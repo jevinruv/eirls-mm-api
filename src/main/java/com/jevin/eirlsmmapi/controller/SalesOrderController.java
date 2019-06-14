@@ -34,10 +34,10 @@ public class SalesOrderController {
     public ResponseEntity<?> updateStatus(@RequestBody SalesOrderStatusForm salesOrderStatusForm) {
 
         SalesOrder salesOrder = salesOrderRepo
-                .findById(salesOrderStatusForm.getId())
+                .findBySalesOrderId(salesOrderStatusForm.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Sales Order not found for this id or Invalid :: " + salesOrderStatusForm.getId()));
 
-        if (!salesOrderStatusForm.getStatus().equals("cancelled")) {
+        if (!salesOrderStatusForm.getStatus().equals("confirmed")) {
             throw new ResourceNotFoundException("Sales Order Status Invalid :: " + salesOrderStatusForm.getStatus());
         }
 
