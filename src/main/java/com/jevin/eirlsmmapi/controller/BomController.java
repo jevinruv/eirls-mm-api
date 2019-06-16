@@ -1,6 +1,7 @@
 package com.jevin.eirlsmmapi.controller;
 
 import com.jevin.eirlsmmapi.model.Bom;
+import com.jevin.eirlsmmapi.model.SupplierOrder;
 import com.jevin.eirlsmmapi.repository.BomRepo;
 import com.jevin.eirlsmmapi.service.BomService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,13 @@ public class BomController {
     @GetMapping
     public List<Bom> getAll() {
         return bomRepo.findAll();
+    }
+
+    @GetMapping("/status")
+    public ResponseEntity<?> getByStatus(@RequestParam("status") String status) {
+
+        Optional<List<Bom>> bomList = bomRepo.findAllByStatus(status);
+        return new ResponseEntity<>(bomList, HttpStatus.OK);
     }
 
     @GetMapping("/availability/{id}")
