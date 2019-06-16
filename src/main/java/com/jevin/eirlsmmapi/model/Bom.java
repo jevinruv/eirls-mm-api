@@ -14,7 +14,7 @@ public class Bom {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String productionBomId;
-    private int status;
+    private String status;
 
     @OneToMany(mappedBy = "bom", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonIgnoreProperties("bom")
@@ -36,11 +36,11 @@ public class Bom {
         this.productionBomId = productionBomId;
     }
 
-    public int getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
@@ -50,5 +50,6 @@ public class Bom {
 
     public void setBomItems(List<BomItem> bomItems) {
         this.bomItems = bomItems;
+        this.bomItems.forEach(bomItem -> bomItem.setBom(this));
     }
 }

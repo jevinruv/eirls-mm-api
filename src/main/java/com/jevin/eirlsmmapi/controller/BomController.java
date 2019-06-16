@@ -2,6 +2,7 @@ package com.jevin.eirlsmmapi.controller;
 
 import com.jevin.eirlsmmapi.model.Bom;
 import com.jevin.eirlsmmapi.repository.BomRepo;
+import com.jevin.eirlsmmapi.service.BomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,9 @@ public class BomController {
     @Autowired
     BomRepo bomRepo;
 
+    @Autowired
+    BomService bomService;
+
 
     @GetMapping("/{id}")
     public Optional<Bom> get(@PathVariable int id) {
@@ -28,10 +32,20 @@ public class BomController {
         return bomRepo.findAll();
     }
 
+    @GetMapping("/availability/{id}")
+    public ResponseEntity<?> getAvailability(@PathVariable int id) {
+
+        boolean isAvailable = bomService.checkAvailability(id);
+
+        return new ResponseEntity<>(isAvailable, HttpStatus.OK);
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<?> updateStatus(@PathVariable int id) {
 
-        return new ResponseEntity<>("", HttpStatus.OK);
+        Bom bom = bomService.updateBOM(id);
+
+        return new ResponseEntity<>(bom, HttpStatus.OK);
     }
 
 }

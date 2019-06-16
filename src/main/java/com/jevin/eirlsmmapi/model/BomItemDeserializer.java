@@ -6,10 +6,12 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.jevin.eirlsmmapi.repository.ItemRawRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.Optional;
 
+@Component
 public class BomItemDeserializer extends JsonDeserializer<BomItem> {
 
     private static ItemRawRepo itemRawRepo;

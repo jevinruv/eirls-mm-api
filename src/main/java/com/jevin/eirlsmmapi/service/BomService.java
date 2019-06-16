@@ -1,5 +1,7 @@
 package com.jevin.eirlsmmapi.service;
 
+import com.jevin.eirlsmmapi.exception.ResourceNotFoundException;
+import com.jevin.eirlsmmapi.form.TokenProduction;
 import com.jevin.eirlsmmapi.model.Bom;
 import com.jevin.eirlsmmapi.model.BomItem;
 import com.jevin.eirlsmmapi.model.ItemRaw;
@@ -22,9 +24,10 @@ public class BomService {
     @Autowired
     BomRepo bomRepo;
 
-    final String bomUrl = "https://eirlss-production.herokuapp.com/public/api/billofmaterials";
+    final String urlBom = "https://eirlss-production.herokuapp.com/public/api/billofmaterials";
+    final String urlToken = "http://eirlss-production.herokuapp.com/public/api/oauth/token";
 
-    private String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6Ijg0MmI1NWE2YjMwMmIwNDZjZjkyZTZiYjA0ZjJhOTg0OTYzNmMxMzViYTczYjA1ZGU1ZmQxZmZlM2U3MzllZjk1ZTJkYzlhZTBjYjU2ZWY5In0.eyJhdWQiOiIzIiwianRpIjoiODQyYjU1YTZiMzAyYjA0NmNmOTJlNmJiMDRmMmE5ODQ5NjM2YzEzNWJhNzNiMDVkZTVmZDFmZmUzZTczOWVmOTVlMmRjOWFlMGNiNTZlZjkiLCJpYXQiOjE1NjA1MDEwODgsIm5iZiI6MTU2MDUwMTA4OCwiZXhwIjoxNTkyMTIzNDg4LCJzdWIiOiIiLCJzY29wZXMiOlsiKiJdfQ.UTMkwNzMatnZPiLzkl3rexFidYTIvMPv5pUs_GHz8YT_pVYMd3M08505R9rB2VugKghX-IMNtrYUqru1A-dk4YkSSXA-PgNyf7T4pqtSnT7k17dXpABKR7jlu2l_27MyOARP_E67HhXeITLdYGZSmvk7ruHxMfNrQ-YFJP8k253TT80Ly9Q89gK3TAoTG9SmwG42sgYeJ4q320XXrNBDffQaXoL_aomSJCUrms7uFIyaIMfcv9KgTgpvK0r0KNtO5nMlxvTYJzw4FjMAdCBYTPyPYQa8YhW5wnfgqgkaOgMuwJUo8kXbAorOSObeSBFOQ5ApozgxU0oxLy6ep5MyVU0OE6BuH1oZ9aZALA3x5hijcN1wVcmOWDu5-XW3YUa-wBDkYWI_MPj-1LLDigzBj8XtVfN-z64hX8hrvRZrk4dDg7UaX9TKyepPzstEoUC9hLZtLGgXWRi1O85TjgXvqa8p22TKGDJ6MDj7gz7UKK7rmiozeKyhDJwKt0XSlpfCH-gCGCXYfXW17kYZiOZ8sy7AYplPhGN674HxNRbHssdW07dH_42yjepb7jyIKlJFWsc1PBJyGYz_hQJ3s0VymKGGjpqa0IqrFFX8QLEqlDlj8agVeJouTCRttxtgf8b5mjDK0apAjV-t5vLPvipVPwSdIEY4kOEkdnpp5OTYK24";
+    private String token = null;
 
     private int counter = 0;
 
@@ -33,11 +36,12 @@ public class BomService {
 
     public List<Bom> getBoms() {
 
+        getToken();
         getRestClient();
 
         RestTemplate restTemplate = new RestTemplate();
 
-        ResponseEntity<Bom[]> bomResponseEntity = restTemplate.exchange(bomUrl + "?includes=billItems.material", HttpMethod.GET, entity, Bom[].class);
+        ResponseEntity<Bom[]> bomResponseEntity = restTemplate.exchange(urlBom + "?includes=billItems.material", HttpMethod.GET, entity, Bom[].class);
 
         if (!bomResponseEntity.getStatusCode().is2xxSuccessful()) {
             return null;
@@ -62,19 +66,11 @@ public class BomService {
 
     }
 
-    public void validateOrder(List<Bom> bomList) {
+    public boolean checkAvailability(int id) {
 
-        bomList.forEach(bom -> {
-
-            if (bom.getStatus() == 1) {
-                checkQuantity(bom);
-            }
-
-        });
-
-    }
-
-    private void checkQuantity(Bom bom) {
+        Bom bom = bomRepo
+                .findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("BOM not found for this id :: " + id));
 
         bom.getBomItems().forEach(bomItem -> {
 
@@ -92,11 +88,12 @@ public class BomService {
         });
 
         if (counter == bom.getBomItems().size()) {
-            reduceItems(bom.getBomItems());
-            updateStatus(bom);
+            return true;
         }
 
+        return false;
     }
+
 
     private void reduceItems(List<BomItem> bomItemList) {
 
@@ -112,8 +109,23 @@ public class BomService {
         });
     }
 
+    public Bom updateBOM(int id) {
+
+        Bom bom = bomRepo
+                .findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("BOM not found for this id :: " + id));
+
+        reduceItems(bom.getBomItems());
+
+        updateStatus(bom);
+
+        bom.setStatus("Approved");
+        return bomRepo.save(bom);
+    }
+
     private void updateStatus(Bom bom) {
 
+        getToken();
         RestTemplate template = new RestTemplate();
         Map payload = new HashMap<String, String>();
 
@@ -124,7 +136,7 @@ public class BomService {
         headers.setContentType(MediaType.APPLICATION_JSON);
 
         HttpEntity<Map> requestEntity = new HttpEntity<>(payload, headers);
-        ResponseEntity<Object> result = template.exchange(bomUrl + bom.getProductionBomId(), HttpMethod.PUT, requestEntity, Object.class);
+        ResponseEntity<Object> result = template.exchange(urlBom + "/" + bom.getProductionBomId(), HttpMethod.PUT, requestEntity, Object.class);
 
         if (!result.getStatusCode().is2xxSuccessful()) {
 //            return null;
@@ -133,13 +145,35 @@ public class BomService {
 
     private void getRestClient() {
 
-//        String url = "http://eirlss-production.herokuapp.com/public/api/oauth/token";
-//        RestTemplate restTemplate = new RestTemplate();
-
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.add("Authorization", "Bearer " + token);
         entity = new HttpEntity<String>("parameters", headers);
+    }
+
+    private void getToken() {
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        Map payload = new HashMap<String, String>();
+
+        payload.put("grant_type", "client_credentials");
+        payload.put("scope", "*");
+        payload.put("client_id", "3");
+        payload.put("client_secret", "41xadAeKIUtiQtkgVmMixurfWengoamkDUlcoE6L");
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<Map> requestEntity = new HttpEntity<>(payload, headers);
+        ResponseEntity<TokenProduction> result = restTemplate.exchange(urlToken, HttpMethod.POST, requestEntity, TokenProduction.class);
+
+        if (!result.getStatusCode().is2xxSuccessful()) {
+//            return null;
+        }
+
+        TokenProduction tokenProduction = result.getBody();
+        token = tokenProduction.getAccess_token();
     }
 
 

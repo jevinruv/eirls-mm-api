@@ -16,8 +16,7 @@ public class BomDeserializer extends JsonDeserializer<Bom> {
 
         JsonNode node = p.getCodec().readTree(p);
 
-        int id = node.get("id").intValue();
-        int status = node.get("status_id").intValue();
+        String productionId = node.get("id").textValue();
 
         JsonParser parser = node.findValue("bill_items").traverse();
         parser.setCodec(p.getCodec());
@@ -25,9 +24,9 @@ public class BomDeserializer extends JsonDeserializer<Bom> {
         });
 
         Bom bom = new Bom();
-        bom.setId(id);
-        bom.setStatus(status);
+        bom.setProductionBomId(productionId);
         bom.setBomItems(bomItems);
+        bom.setStatus("Pending");
 
         return bom;
     }

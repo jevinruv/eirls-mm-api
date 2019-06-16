@@ -17,7 +17,7 @@ public class BomItem {
     @ManyToOne
     @JoinColumn
     @JsonIgnoreProperties("bomItems")
-    private SalesOrder bom;
+    private Bom bom;
 
     @ManyToOne
     @JoinColumn
@@ -39,11 +39,11 @@ public class BomItem {
         this.quantity = quantity;
     }
 
-    public SalesOrder getBom() {
+    public Bom getBom() {
         return bom;
     }
 
-    public void setBom(SalesOrder bom) {
+    public void setBom(Bom bom) {
         this.bom = bom;
     }
 
