@@ -33,8 +33,8 @@ public class BomController {
         return bomRepo.findAll();
     }
 
-    @GetMapping("/status")
-    public ResponseEntity<?> getByStatus(@RequestParam("status") String status) {
+    @GetMapping("/status/{status}")
+    public ResponseEntity<?> getByStatus(@PathVariable String status) {
 
         Optional<List<Bom>> bomList = bomRepo.findAllByStatus(status);
         return new ResponseEntity<>(bomList, HttpStatus.OK);
