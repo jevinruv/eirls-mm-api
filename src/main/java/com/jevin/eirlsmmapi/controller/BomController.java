@@ -48,7 +48,7 @@ public class BomController {
         return new ResponseEntity<>(isAvailable, HttpStatus.OK);
     }
 
-    @PutMapping("/{id}")
+    @GetMapping("/approve/{id}")
     public ResponseEntity<?> updateStatus(@PathVariable int id) {
 
         Bom bom = bomService.updateBOM(id);
