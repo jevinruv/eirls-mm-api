@@ -72,6 +72,8 @@ public class BomService {
                 .findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("BOM not found for this id :: " + id));
 
+        counter = 0;
+
         bom.getBomItems().forEach(bomItem -> {
 
             Optional<ItemRaw> itemRawOptional = itemRawRepo.findById(bomItem.getItemRaw().getId());
